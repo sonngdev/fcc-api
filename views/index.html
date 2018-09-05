@@ -15,7 +15,7 @@ body {
   text-align: center;
 }
 
-h1, h2 {
+h1, h2, h3 {
   font-family: "Garamond", sans-serif;
   font-weight: normal;
 }
@@ -24,23 +24,51 @@ code {
   background-color: #B1B08D;
 }
 
+hr {
+  margin-top: 1.5rem;
+  width: 50%;
+}
+
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>FreeCodeCamp Request Header Parser API</h1>
+    <h1>FreeCodeCamp API Projects</h1>
 
-    <h2>Example usage</h2>
-    <code>&lt;baseURL&gt;/api</code>
+    <hr>
 
-    <h2>Example response</h2>
-    <code>
-      {
-        ipaddress: "::1",
-        language: "vi,en-US;q=0.9,en;q=0.8",
-        software: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
-      }
-    </code>
+    <div id="timestamp">
+      <h2>Timestamp</h2>
+
+      <h3>Example usage</h3>
+      <code>&lt;baseURL&gt;/api/timestamp/:dateString?</code>
+
+      <h3>Example response</h3>
+      <code>
+        {
+          unix: 1536119730959,
+          utc: "Wed, 05 Sep 2018 03:55:30 GMT"
+        }
+      </code>
+    </div>
+
+    <hr>
+
+    <div id="header">
+      <h2>Request Header Parser</h2>
+
+      <h3>Example usage</h3>
+      <code>&lt;baseURL&gt;/api/header</code>
+
+      <h3>Example response</h3>
+      <code>
+        {
+          ipaddress: "::1",
+          language: "vi,en-US;q=0.9,en;q=0.8",
+          software: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+        }
+      </code>
+    </div>
   </div>
 </body>
 </html>
