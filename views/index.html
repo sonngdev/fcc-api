@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <title>FCC Request Header Parser</title>
   <style>
 
@@ -13,6 +14,7 @@ body {
 
 .container {
   text-align: center;
+  margin: 2rem 3rem 3rem;
 }
 
 h1, h2, h3 {
@@ -32,43 +34,71 @@ hr {
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="app">
     <h1>FreeCodeCamp API Projects</h1>
+    <api v-for="api in apis" :key="api.id" :info="api" ></api>
+  </div>
+  <script>
 
-    <hr>
-
-    <div id="timestamp">
-      <h2>Timestamp</h2>
-
+Vue.component("usage", {
+  template: `
+    <div>
       <h3>Example usage</h3>
-      <code>&lt;baseURL&gt;/api/timestamp/:dateString?</code>
+      <code><slot></slot></code>
+    </div>
+  `
+});
 
+Vue.component("response", {
+  template: `
+    <div>
       <h3>Example response</h3>
-      <code>
-        {
+      <code><slot></slot></code>
+    </div>
+  `
+});
+
+Vue.component("api", {
+  props: ["info"],
+  template: `
+    <div class="api" :id="info.idname">
+      <hr>
+      <h2>{{ info.title }}</h2>
+      <usage>{{ info.usage }}</usage>
+      <response>{{ info.response }}</response>
+    </div>
+  `
+})
+
+let app = new Vue({
+  el: "#app",
+  data: {
+    apis: [
+      {
+        id: 1,
+        idname: "timestamp",
+        title: "Timestamp",
+        usage: "<base-url>/api/timestamp/:data_string?",
+        response: {
           unix: 1536119730959,
           utc: "Wed, 05 Sep 2018 03:55:30 GMT"
         }
-      </code>
-    </div>
-
-    <hr>
-
-    <div id="header">
-      <h2>Request Header Parser</h2>
-
-      <h3>Example usage</h3>
-      <code>&lt;baseURL&gt;/api/header</code>
-
-      <h3>Example response</h3>
-      <code>
-        {
+      },
+      {
+        id: 2,
+        idname: "header",
+        title: "Request Header Parser",
+        usage: "<base-url>/api/header",
+        response: {
           ipaddress: "::1",
           language: "vi,en-US;q=0.9,en;q=0.8",
           software: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
         }
-      </code>
-    </div>
-  </div>
+      }
+    ]
+  }
+});
+
+  </script>
 </body>
 </html>
