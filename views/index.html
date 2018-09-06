@@ -10,6 +10,7 @@
 
 body {
   background-color: #FEFDE3;
+  font-family: "Gill Sans", sans-serif;
 }
 
 .container {
@@ -18,8 +19,11 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: "Garamond", sans-serif;
   font-weight: normal;
+}
+
+form {
+  margin-top: 1rem;
 }
 
 code {
@@ -58,6 +62,16 @@ Vue.component("response", {
   `
 });
 
+Vue.component("custom-form", {
+  props: ["forminfo"],
+  template: `
+    <form :action="forminfo.action" method="post">
+      {{ forminfo.inputtext }}: <input :name="forminfo.name">
+      <button type="submit">{{ forminfo.buttontext }}</button>
+    </form>
+  `
+})
+
 Vue.component("api", {
   props: ["info"],
   template: `
@@ -65,6 +79,7 @@ Vue.component("api", {
       <hr>
       <h2>{{ info.title }}</h2>
       <usage>{{ info.usage }}</usage>
+      <custom-form v-if="info.needform" :forminfo="info.form"></custom-form>
       <response>{{ info.response }}</response>
     </div>
   `
@@ -78,7 +93,8 @@ let app = new Vue({
         id: 1,
         idname: "timestamp",
         title: "Timestamp",
-        usage: "<base-url>/api/timestamp/:data_string?",
+        usage: "GET <base-url>/api/timestamp/:date_string?",
+        needform: false,
         response: {
           unix: 1536119730959,
           utc: "Wed, 05 Sep 2018 03:55:30 GMT"
@@ -88,11 +104,29 @@ let app = new Vue({
         id: 2,
         idname: "header",
         title: "Request Header Parser",
-        usage: "<base-url>/api/header",
+        usage: "GET <base-url>/api/header",
+        needform: false,
         response: {
           ipaddress: "::1",
           language: "vi,en-US;q=0.9,en;q=0.8",
           software: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+        }
+      },
+      {
+        id: 3,
+        idname: "shorturl",
+        title: "URL Shortener",
+        usage: "POST <base-url>/api/shorturl/new | GET <base-url>/api/shorturl/:short",
+        needform: true,
+        form: {
+          action: "/api/shorturl/new",
+          inputtext: "Long URL",
+          name: "longUrl",
+          buttontext: "Shorten"
+        },
+        response: {
+          original_url: "https://www.tinhte.vn",
+          short_url: 1
         }
       }
     ]
