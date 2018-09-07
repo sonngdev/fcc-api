@@ -54,6 +54,10 @@ app.get("/api/shorturl/:short", (req, res) => {
   }
 })
 
+app.post("/api/metadata", (req, res) => {
+
+})
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 })
