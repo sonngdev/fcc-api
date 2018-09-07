@@ -65,7 +65,7 @@ Vue.component("response", {
 Vue.component("custom-form", {
   props: ["forminfo"],
   template: `
-    <form :action="forminfo.action" method="post">
+    <form :action="forminfo.action" method="post" :enctype="forminfo.enctype">
       {{ forminfo.inputtext }}: <input :type="forminfo.type" :name="forminfo.name">
       <button type="submit">{{ forminfo.buttontext }}</button>
     </form>
@@ -121,6 +121,7 @@ let app = new Vue({
         form: {
           action: "/api/shorturl/new",
           type: "text",
+          enctype: null,
           inputtext: "Long URL",
           name: "longUrl",
           buttontext: "Shorten"
@@ -139,6 +140,7 @@ let app = new Vue({
         form: {
           action: "/api/metadata",
           type: "file",
+          enctype: "multipart/form-data",
           inputtext: "Choose a file",
           name: "upfile",
           buttontext: "Read metadata"

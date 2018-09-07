@@ -3,6 +3,8 @@ let app = express();
 let bodyParser = require("body-parser");
 let dns = require("dns");
 let shortened = {0: "https://freecodecamp.org"};
+var multer  = require('multer');
+var upload = multer();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -54,8 +56,13 @@ app.get("/api/shorturl/:short", (req, res) => {
   }
 })
 
-app.post("/api/metadata", (req, res) => {
-
+app.post("/api/metadata", upload.single("upfile"), (req, res) => {
+  let file = req.file;
+  res.json({
+    name: file.originalname,
+    type: file.mimetype,
+    size: file.size
+  })
 })
 
 app.get("/", (req, res) => {
