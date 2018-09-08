@@ -100,7 +100,7 @@ app.get("/api/imagesearch/:query", (req, res) => {
     .end(result => {
       recentImageSearch.unshift({
         term: query,
-        when: String(searchTime)
+        when: searchTime
       });
       if (recentImageSearch.length > 10) recentImageSearch.pop();
       res.json(result.body.value);
