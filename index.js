@@ -6,6 +6,8 @@ let shortened = {0: "https://freecodecamp.org"};
 let multer  = require('multer');
 let upload = multer();
 let formidable = require("formidable");
+let unirest = require("unirest");
+let recentImageSearch = [];
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -77,6 +79,37 @@ app.post("/api/metadata", (req, res) => {
 //     size: file.size
 //   })
 // })
+
+app.get("/api/imagesearch/:query", (req, res) => {
+  let query = req.params.query;
+  let offset = req.query.offset;
+  let searchTime = new Date();
+  let url = "https://contextualwebsearch-websearch-v1.p.mashape.com/api/Search/ImageSearchAPIWithPagination";
+  let options = {
+    autoCorrect: false,
+    pageNumber: offset || 1,
+    pageSize: 10,
+    q: encodeURIComponent(query),
+    safeSearch: false
+  };
+  url += "?" + Object.entries(options).map(arr => arr.join("=")).join("&");
+  unirest.get(url)
+    // API is free. Get key here: https://rapidapi.com/contextualwebsearch/api/Web%20Search/functions/imageSearch
+    .header("X-Mashape-Key", "GbrTXqfEOimsh3BMo0eOijKqWOVNp1CymYpjsnU3NWKMjPkKRm")
+    .header("X-Mashape-Host", "contextualwebsearch-websearch-v1.p.mashape.com")
+    .end(result => {
+      recentImageSearch.unshift({
+        term: query,
+        when: String(searchTime)
+      });
+      if (recentImageSearch.length > 10) recentImageSearch.pop();
+      res.json(result.body.value);
+    });
+})
+
+app.get("/api/latest/imagesearch", (req, res) => {
+  res.json(recentImageSearch);
+})
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
