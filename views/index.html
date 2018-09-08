@@ -65,7 +65,7 @@ Vue.component("response", {
 Vue.component("custom-form", {
   props: ["forminfo"],
   template: `
-    <form :action="forminfo.action" method="post" :enctype="forminfo.enctype">
+    <form :action="forminfo.action" :method="forminfo.method" :enctype="forminfo.enctype">
       {{ forminfo.inputtext }}: <input :type="forminfo.type" :name="forminfo.name">
       <button type="submit">{{ forminfo.buttontext }}</button>
     </form>
@@ -120,6 +120,7 @@ let app = new Vue({
         needform: true,
         form: {
           action: "/api/shorturl/new",
+          method: "post",
           type: "text",
           enctype: null,
           inputtext: "Long URL",
@@ -139,6 +140,7 @@ let app = new Vue({
         needform: true,
         form: {
           action: "/api/metadata",
+          method: "post",
           type: "file",
           enctype: "multipart/form-data",
           inputtext: "Choose a file",
@@ -150,6 +152,21 @@ let app = new Vue({
           type: "image/jpeg",
           size: 529913
         }
+      },
+      {
+        id: 5,
+        idname: "imagesearch",
+        title: "Image Search Abstraction",
+        usage: "GET <base-url>/api/imagesearch/:query?offset=:offset | GET <base-url>/api/latest/imagesearch",
+        needform: false,
+        response: [
+          {
+            url: "https://i.ytimg.com/vi/HLkA_Xk0UTo/hqdefault.jpg",
+            snippet: "The best of funny lolcats! - YouTube",
+            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKMUDdSnkry-t5eXX4wbNrWn4etJl8KEJH1vPvGuYqqLqfuzoLYOmqPXVm",
+            context: "https://www.youtube.com/watch?v=HLkA_Xk0UTo"
+          }
+        ]
       }
     ]
   }
